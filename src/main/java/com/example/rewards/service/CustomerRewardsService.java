@@ -10,6 +10,7 @@ import java.util.HashMap;
 @Service
 public class CustomerRewardsService {
 
+    //Methods to calculate rewards based on customer transactions
     public Map<String, Integer> calculateRewards(List<Transaction> transactions) {
         Map<String, Integer> customerRewards = new HashMap<>();
 
@@ -18,8 +19,6 @@ public class CustomerRewardsService {
             customerRewards.put(transaction.getCustomerId(),
                     customerRewards.getOrDefault(transaction.getCustomerId(), 0) + points);
         }
-        System.out.println(customerRewards);
-
         return customerRewards;
     }
 
