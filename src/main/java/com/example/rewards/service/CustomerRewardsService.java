@@ -1,42 +1,74 @@
 package com.example.rewards.service;
 
+import com.example.rewards.exception.CustomerNotFoundException;
+import com.example.rewards.model.Customer;
+import com.example.rewards.dto.MonthlyReward;
+import com.example.rewards.dto.RewardsResponse;
 import com.example.rewards.model.Transaction;
+import com.example.rewards.repository.CustomerRepository;
+import com.example.rewards.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class CustomerRewardsService {
+    @Autowired
+    TransactionRepository transactionRepository;
 
-    //Methods to calculate rewards based on customer transactions
-    public Map<String, Integer> calculateRewards(List<Transaction> transactions) {
-        Map<String, Integer> customerRewards = new HashMap<>();
+    @Autowired
+    CustomerRepository customerRepository;
 
-        for (Transaction transaction : transactions) {
-            int points = calculateRewardPoints(transaction.getAmount());
-            customerRewards.put(transaction.getCustomerId(),
-                    customerRewards.getOrDefault(transaction.getCustomerId(), 0) + points);
+    /* Calculates reward points for a given customer over a specified number of months.
+       @param customerId The customer ID
+     @param months The number of past months to consider (default: 3)
+      * @return RewardsResponse containing monthly and total reward points
+      */
+    public RewardsResponse calculateRewards(Long customerId, int months) {
+        Customer customer = customerRepository.findById(customerId).
+                orElseThrow(() -> new RuntimeException("Customer not found"));
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(months);
+
+        List<Transaction> transactions = transactionRepository.findByCustomerIdAndTransactionDateBetween(customerId, startDate, endDate);
+        if (transactions.isEmpty()) {
+            throw new CustomerNotFoundException("No transactions found for customer ID: " + customerId);
         }
-        return customerRewards;
+        Map<String, MonthlyReward> rewardsMap = new LinkedHashMap<>();
+        for (Transaction transaction : transactions) {
+            String month = transaction.getDate().getMonth().toString() + " " + transaction.getDate().getYear();
+            double amount = transaction.getAmount();
+            int points = calculateRewardPoints(amount);
+            rewardsMap.putIfAbsent(month, new MonthlyReward(month, 0, 0));
+            MonthlyReward reward = rewardsMap.get(month);
+            reward.totalAmount += amount;
+            reward.rewardPoints += points;
+        }
+
+        List<MonthlyReward> monthlyRewards = new ArrayList<>(rewardsMap.values());
+        int totalPoints = monthlyRewards.stream().mapToInt(r -> r.rewardPoints).sum();
+        return new RewardsResponse(customerId, customer.getName(), monthlyRewards, totalPoints);
     }
 
+    /*Methods to calculate rewards points */
     public int calculateRewardPoints(double amount) {
+        if (amount <= 0)
+            return 0;
         int points = 0;
-
-        // Points for amount over $100 (2 points per $1)
         if (amount > 100) {
             points += (amount - 100) * 2;
             amount = 100;
         }
-
-        // Points for amount between $50 and $100 (1 point per $1)
         if (amount > 50) {
             points += (amount - 50);
         }
-
         return points;
     }
 
+    /*  Fetch all customers */
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
 }

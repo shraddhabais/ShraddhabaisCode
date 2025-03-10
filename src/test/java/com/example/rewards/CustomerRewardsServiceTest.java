@@ -1,3 +1,4 @@
+
 package com.example.rewards;
 
 import com.example.rewards.service.CustomerRewardsService;
@@ -10,8 +11,9 @@ public class CustomerRewardsServiceTest {
 
     @Test
     public void testCalculateRewards() {
-        assertEquals(90, customerRewardsService.calculateRewardPoints(120));
+        assertEquals(91, customerRewardsService.calculateRewardPoints(120.50));
         assertEquals(25, customerRewardsService.calculateRewardPoints(75));
     }
 
 }
+

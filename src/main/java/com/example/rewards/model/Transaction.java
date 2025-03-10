@@ -1,49 +1,66 @@
 package com.example.rewards.model;
 
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "TRANSACTION")
 public class Transaction {
-    private String customerId;
-    private String customerName;
-    private String transactionDate;
-    private double amount;
 
-    // Constructors, getters, and setters
-    public Transaction(String customerId, String transactionDate, double amount, String customerName) {
-        this.customerId = customerId;
-        this.transactionDate = transactionDate;
-        this.amount = amount;
-        this.customerName = customerName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private Long customerId;
+
+    @Column(nullable = false)
+    private Double amount;
+
+    @Column(name = "transaction_date", nullable = false)
+    private LocalDate transactionDate;
+
+    public Long getId() {
+        return id;
     }
 
-    public String getCustomerId() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(String transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
+
+    public LocalDate getDate() {
+        return transactionDate;
+    }
+
+    public void setDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public Transaction() {
+    }
+
+    public Transaction(Long id, Long customerId, Double amount, LocalDate transactionDate) {
+        this.id = id;
+        this.customerId = customerId;
+        this.amount = amount;
+        this.transactionDate = transactionDate;
+    }
+
+
 }
