@@ -2,10 +2,10 @@ This Spring Boot application calculates **customer reward points** based on thei
 
 Features
 -  REST API to calculate **reward points** for each customer
--  Stores transactionsin an H2 in-memory database**
+-  Stores Customers details &  transactions in an H2 in-memory database
 -  Customizable period for reward calculations
 -  
-## 🛠️ Installation & Setup
+##  Installation & Setup
 
 1) Clone the Repository
 
