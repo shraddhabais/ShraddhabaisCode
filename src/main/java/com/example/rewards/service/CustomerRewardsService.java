@@ -1,6 +1,7 @@
 package com.example.rewards.service;
 
 import com.example.rewards.exception.CustomerNotFoundException;
+import com.example.rewards.exception.InvalidTransactionAmountException;
 import com.example.rewards.model.Customer;
 import com.example.rewards.dto.MonthlyReward;
 import com.example.rewards.dto.RewardsResponse;
@@ -31,14 +32,15 @@ public class CustomerRewardsService {
                 orElseThrow(() -> new RuntimeException("Customer not found"));
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = endDate.minusMonths(months);
-
         List<Transaction> transactions = transactionRepository.findByCustomerIdAndTransactionDateBetween(customerId, startDate, endDate);
         if (transactions.isEmpty()) {
-            throw new CustomerNotFoundException("No transactions found for customer ID: " + customerId);
+            throw new CustomerNotFoundException(
+                    "Customer not found with ID: " + customerId, customerId
+            );
         }
         Map<String, MonthlyReward> rewardsMap = new LinkedHashMap<>();
         for (Transaction transaction : transactions) {
-            String month = transaction.getDate().getMonth().toString() + " " + transaction.getDate().getYear();
+            String month = transaction.getTransactionDate().getMonth().toString() + " " + transaction.getTransactionDate().getYear();
             double amount = transaction.getAmount();
             int points = calculateRewardPoints(amount);
             rewardsMap.putIfAbsent(month, new MonthlyReward(month, 0, 0));
@@ -54,8 +56,9 @@ public class CustomerRewardsService {
 
     /*Methods to calculate rewards points */
     public int calculateRewardPoints(double amount) {
-        if (amount <= 0)
-            return 0;
+        if (amount <= 0) {
+            throw new InvalidTransactionAmountException("Transaction amount must be greater than zero.");
+        }
         int points = 0;
         if (amount > 100) {
             points += (amount - 100) * 2;

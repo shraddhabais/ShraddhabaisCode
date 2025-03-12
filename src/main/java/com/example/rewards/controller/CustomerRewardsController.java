@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rewards")
-class CustomerRewardsController {
+public class CustomerRewardsController {
     @Autowired
     CustomerRewardsService customerRewardsService;
 
@@ -24,7 +24,6 @@ class CustomerRewardsController {
     public ResponseEntity<RewardsResponse> getRewards(@RequestParam Long customerId, @RequestParam(defaultValue = "3") int months) {
         RewardsResponse rewards = customerRewardsService.calculateRewards(customerId, months);
         return ResponseEntity.ok(rewards);
-
     }
 
     /*Get all customers*/
@@ -33,5 +32,4 @@ class CustomerRewardsController {
         List<Customer> customers = customerRewardsService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
-
 }

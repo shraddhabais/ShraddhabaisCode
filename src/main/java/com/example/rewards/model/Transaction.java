@@ -1,10 +1,18 @@
 package com.example.rewards.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+
 @Entity
+@Data  // Generates getters, setters, toString, equals, and hashCode
+@NoArgsConstructor  // Generates a no-args constructor
+@AllArgsConstructor // Generates an all-args constructor
 @Table(name = "TRANSACTION")
 public class Transaction {
 
@@ -19,48 +27,4 @@ public class Transaction {
 
     @Column(name = "transaction_date", nullable = false)
     private LocalDate transactionDate;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getDate() {
-        return transactionDate;
-    }
-
-    public void setDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public Transaction() {
-    }
-
-    public Transaction(Long id, Long customerId, Double amount, LocalDate transactionDate) {
-        this.id = id;
-        this.customerId = customerId;
-        this.amount = amount;
-        this.transactionDate = transactionDate;
-    }
-
-
 }
