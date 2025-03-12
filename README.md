@@ -1,7 +1,7 @@
 This Spring Boot application calculates **customer reward points** based on their purchases over a three-month period.  
 
 Features
--  REST API to calculate **reward points** for each customer
+-  REST API to calculate Rewards points for each customer
 -  Stores Customers details &  transactions in an H2 in-memory database
 -  Customizable period for reward calculations
 -  
@@ -23,32 +23,33 @@ Username: sa
 Password: (leave empty)
 
  API Endpoints
- 1. Get Reward Points (Last 3 Months)
-* GET "http://localhost:8080/api/rewards?customerId=1
-Default: Returns rewards for the last 3 months. (months is optional here,default is 3)
+1. Get Reward Points (Last 3 Months)
+GET /api/rewards/{customerId}
+Default: Returns rewards for the last 3 months.
 
-📌 Example Request:
+ Example Request:
 
 * GET "http://localhost:8080/api/rewards?customerId=1
 
  Response :
- {
-    "customerId": 1,
-    "customerName": "Jonny",
-    "transactions": [
-        {
-            "month": "FEBRUARY 2025",
-            "totalAmount": 100.0,
-            "rewardPoints": 50
-        },
-        {
-            "month": "JANUARY 2025",
-            "totalAmount": 200.0,
-            "rewardPoints": 250
-        }
-    ],
-    "totalRewardPoints": 300
+{
+  "customerId": 1,
+  "customerName": "Jonny",
+  "transactions": [
+{
+      "month": "FEBRUARY 2025",
+      "totalAmount": 100.0,
+      "rewardPoints": 50
+    },
+    {
+      "month": "JANUARY 2025",
+      "totalAmount": 200.0,
+      "rewardPoints": 250
+    }
+  ],
+  "totalRewardPoints": 300
 }
+
 
 
 2. GET  http://localhost:8080/api/rewards?customerId=1&months=5
@@ -85,7 +86,7 @@ Default: Returns rewards for the last 3 months. (months is optional here,default
  Response :
  [
     {
-        "id": 1,
+     "id": 1,
         "name": "Jonny"
     },
     {
