@@ -4,7 +4,7 @@ Features
 -  REST API to calculate Rewards points for each customer
 -  Stores Customers details &  transactions in an H2 in-memory database
 -  Customizable period for reward calculations
--  
+   
 ##  Installation & Setup
 
 1) Clone the Repository
