@@ -5,82 +5,74 @@ import com.example.rewards.dto.MonthlyReward;
 import com.example.rewards.dto.RewardsResponse;
 import com.example.rewards.model.Customer;
 import com.example.rewards.service.CustomerRewardsService;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class CustomerRewardsControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
     @Mock
     private CustomerRewardsService customerRewardsService;
 
-    @InjectMocks
-    private CustomerRewardsController customerRewardsController;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    private RewardsResponse mockRewardsResponse;
-    private List<Customer> mockCustomers;
-
-    @BeforeEach
-    void setUp() {
-
+    @Test
+    public void testGetRewards() throws Exception {
+        Long customerId = 1L;
+        int months = 3;
         List<MonthlyReward> monthlyRewards = Arrays.asList(
-                new MonthlyReward("March", 500.00, 120),
-                new MonthlyReward("February", 300.00, 75),
-                new MonthlyReward("January", 250.00, 60)
+                new MonthlyReward("FEBRUARY 2025", 120.0, 90),
+                new MonthlyReward("MARCH 2025", 80.0, 30),
+                new MonthlyReward("APRIL 2025", 200.0, 250)
         );
+        RewardsResponse response = new RewardsResponse(customerId, "Jonny", monthlyRewards, 370);
 
-        mockRewardsResponse = new RewardsResponse(
-                1L,
-                "Jonny",
-                monthlyRewards,
-                255
-        );
+        when(customerRewardsService.calculateRewards(customerId, months)).thenReturn(response);
 
-        // Mocking Customer List
-        mockCustomers = Arrays.asList(
-                new Customer(1L, "Jonny"),
-                new Customer(2L, "Ronny")
-        );
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/rewards")
+                        .param("customerId", customerId.toString())
+                        .param("months", String.valueOf(months)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.customerId").value(customerId))
+                .andExpect(jsonPath("$.customerName").value("Jonny"))
+                .andExpect(jsonPath("$.transactions[0].month").value("FEBRUARY 2025"))
+                .andExpect(jsonPath("$.transactions[0].totalAmount").value(100.0))
+                .andExpect(jsonPath("$.transactions[0].rewardPoints").value(50))
+                .andExpect(jsonPath("$.totalRewardPoints").value(300));
     }
 
     @Test
-    void testGetRewards() {
-        when(customerRewardsService.calculateRewards(1L, 3)).thenReturn(mockRewardsResponse);
-
-        ResponseEntity<RewardsResponse> response = customerRewardsController.getRewards(1L, 3);
-
-        assertNotNull(response);
-        assertEquals("Jonny", response.getBody().customerName);
-        assertEquals(255, response.getBody().totalRewardPoints);
-        assertEquals(3, response.getBody().transactions.size());
-
-
-        MonthlyReward marchReward = response.getBody().transactions.get(0);
-        assertEquals("March", marchReward.month);
-        assertEquals(500.00, marchReward.totalAmount, 0.01);
-        assertEquals(120, marchReward.rewardPoints);
+    public void testGetAllCustomers() throws Exception {
+        List<Customer> customers = Arrays.asList(new Customer(1L, "Jonny"), new Customer(2L, "Ronny"));
+        when(customerRewardsService.getAllCustomers()).thenReturn(customers);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/rewards/customers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Jonny"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("Ronny"));
     }
-
-    @Test
-    void testGetAllCustomers() {
-        when(customerRewardsService.getAllCustomers()).thenReturn(mockCustomers);
-        ResponseEntity<List<Customer>> response = customerRewardsController.getAllCustomers();
-        assertNotNull(response);
-        assertEquals("Ronny", response.getBody().get(1).getName());
-    }
-
 
 }
 
