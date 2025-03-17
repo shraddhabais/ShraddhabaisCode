@@ -36,7 +36,7 @@ Default: Returns rewards for the last 3 months.
 1) GET "http://localhost:8080/api/rewards?customerId=1
 
  Response :
-
+```json ``` 
 {
   "customerId": 1,
   "customerName": "Jonny",
@@ -54,13 +54,13 @@ Default: Returns rewards for the last 3 months.
   ],
   "totalRewardPoints": 300
 }
-
+```json ``` 
 
 
 2) GET  http://localhost:8080/api/rewards?customerId=1&months=5
    
 Response :
-
+```json ``` 
 {
   "customerId": 1,
   "customerName": "Jonny",
@@ -88,12 +88,14 @@ Response :
   ],
   "totalRewardPoints": 416
 }
+```json ``` 
 
 
 3) GET  http://localhost:8080/api/rewards/customers
    
  Response :
  
+ ```json ``` 
 [
   {
     "id": 1,
@@ -108,5 +110,5 @@ Response :
     "name": "Bobby"
   }
 ]
-
+```json ``` 
 
