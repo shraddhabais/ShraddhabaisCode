@@ -36,18 +36,19 @@ Default: Returns rewards for the last 3 months.
 1) GET "http://localhost:8080/api/rewards?customerId=1
 
  Response :
+
 {
   "customerId": 1,
   "customerName": "Jonny",
   "transactions": [
     {
       "month": "FEBRUARY 2025",
-      "totalAmount": 100.0,
+      "totalAmount": 100,
       "rewardPoints": 50
     },
     {
       "month": "JANUARY 2025",
-      "totalAmount": 200.0,
+      "totalAmount": 200,
       "rewardPoints": 250
     }
   ],
@@ -60,7 +61,7 @@ Default: Returns rewards for the last 3 months.
    
 Response :
 
- {
+{
   "customerId": 1,
   "customerName": "Jonny",
   "transactions": [
