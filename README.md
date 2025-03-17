@@ -5,7 +5,7 @@ Features
 -  Stores Customers details &  transactions in an H2 in-memory database
 -  Customizable period for reward calculations
    
-##  Installation & Setup
+Installation & Setup
 
 1) Clone the Repository
 
@@ -29,7 +29,7 @@ Default: Returns rewards for the last 3 months.
 
  Example Request:
 
-* GET "http://localhost:8080/api/rewards?customerId=1
+1) GET "http://localhost:8080/api/rewards?customerId=1
 
  Response :
 {
@@ -52,8 +52,9 @@ Default: Returns rewards for the last 3 months.
 
 
 
-2. GET  http://localhost:8080/api/rewards?customerId=1&months=5
-* Response :
+2) GET  http://localhost:8080/api/rewards?customerId=1&months=5
+Response :
+
  {
   "customerId": 1,
   "customerName": "Jonny",
@@ -83,9 +84,10 @@ Default: Returns rewards for the last 3 months.
 }
 
 
-3.Endpoints to fetch all customers
+3) Endpoints to fetch all customers
  GET  http://localhost:8080/api/rewards/customers
  Response :
+ 
  [
   {
     "id": 1,
