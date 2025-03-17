@@ -54,48 +54,51 @@ Default: Returns rewards for the last 3 months.
 
 2. GET  http://localhost:8080/api/rewards?customerId=1&months=5
 * Response :
-  {
-    "customerId": 1,
-    "customerName": "Jonny",
-    "transactions": [
-        {
-            "month": "DECEMBER 2024",
-            "totalAmount": 120.5,
-            "rewardPoints": 91
-        },
-        {
-            "month": "NOVEMBER 2024",
-            "totalAmount": 75.0,
-            "rewardPoints": 25
-        },
-        {
-            "month": "FEBRUARY 2025",
-            "totalAmount": 100.0,
-            "rewardPoints": 50
-        },
-        {
-            "month": "JANUARY 2025",
-            "totalAmount": 200.0,
-            "rewardPoints": 250
-        }
-    ],
-    "totalRewardPoints": 416
+ {
+  "customerId": 1,
+  "customerName": "Jonny",
+  "transactions": [
+    {
+      "month": "DECEMBER 2024",
+      "totalAmount": 120.5,
+      "rewardPoints": 91
+    },
+    {
+      "month": "NOVEMBER 2024",
+      "totalAmount": 75.0,
+      "rewardPoints": 25
+    },
+    {
+      "month": "FEBRUARY 2025",
+      "totalAmount": 100.0,
+      "rewardPoints": 50
+    },
+    {
+      "month": "JANUARY 2025",
+      "totalAmount": 200.0,
+      "rewardPoints": 250
+    }
+  ],
+  "totalRewardPoints": 416
+}
+
 
 3.Endpoints to fetch all customers
  GET  http://localhost:8080/api/rewards/customers
  Response :
  [
-    {
-     "id": 1,
-        "name": "Jonny"
-    },
-    {
-        "id": 2,
-        "name": "Ronny"
-    },
-    {
-        "id": 3,
-        "name": "Bobby"
-    }
+  {
+    "id": 1,
+    "name": "Jonny"
+  },
+  {
+    "id": 2,
+    "name": "Ronny"
+  },
+  {
+    "id": 3,
+    "name": "Bobby"
+  }
 ]
+
 
