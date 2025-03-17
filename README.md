@@ -36,7 +36,7 @@ Default: Returns rewards for the last 3 months.
   "customerId": 1,
   "customerName": "Jonny",
   "transactions": [
-{
+    {
       "month": "FEBRUARY 2025",
       "totalAmount": 100.0,
       "rewardPoints": 50
