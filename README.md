@@ -53,6 +53,7 @@ Default: Returns rewards for the last 3 months.
 
 
 2) GET  http://localhost:8080/api/rewards?customerId=1&months=5
+   
 Response :
 
  {
@@ -84,8 +85,8 @@ Response :
 }
 
 
-3) Endpoints to fetch all customers
- GET  http://localhost:8080/api/rewards/customers
+3) GET  http://localhost:8080/api/rewards/customers
+   
  Response :
  
  [
