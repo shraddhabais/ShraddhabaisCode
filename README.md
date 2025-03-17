@@ -18,13 +18,17 @@ mvn spring-boot:run
 
 3)H2 Database Console
 URL: http://localhost:8080/h2-console
+
 JDBC URL: jdbc:h2:mem:testdb
+
 Username: sa
+
 Password: (leave empty)
 
  API Endpoints
 1. Get Reward Points (Last 3 Months)
 GET /api/rewards/{customerId}
+
 Default: Returns rewards for the last 3 months.
 
  Example Request:
